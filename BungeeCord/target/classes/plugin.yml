@@ -1,0 +1,4 @@
+name: RodargQueue
+main: io.rodarg.queue.Main
+version: 1.0
+author: Rodarg
