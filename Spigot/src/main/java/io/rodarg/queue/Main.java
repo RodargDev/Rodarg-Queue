@@ -14,16 +14,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class Main extends JavaPlugin {
 
     private Queue<Player> queue = new LinkedList<Player>();
 
+    public List<Player> lastRedirectedPlayers = new ArrayList<Player>();
+
     public int playerLimit = 50;
-    public boolean CONNECTION_ISSUE = false;
-    public Player lastRedirectedPlayer = null;
 
     @Override
     public void onEnable() {
@@ -48,42 +50,51 @@ public class Main extends JavaPlugin {
 
     public void fillPlayerSlots(int slots) {
 
-        //add to list if redirected. remove from main queue and put in sent list. if object
-        //of player is online from sent list in next iteration. dont execute other loop and wait till everyone is offline
-        //if server is empty whole queue should be redirected
-
         getLogger().info("Queue size: " + queue.size());
-        if (lastRedirectedPlayer != null) {
-            getLogger().info("Last player: " + lastRedirectedPlayer.getDisplayName());
-        }
 
         if (queue.size() >= 1 || Bukkit.getOnlinePlayers().size() > 0) {
+            if (lastRedirectedPlayers.size() > 0) {
 
-            for (int i = slots; i >= 0; i--) {
+                boolean CONNECTION_ISSUE = false;
+                List<String> lastPlayers = new ArrayList<String>();
 
-                if (queue.size() < 1 && Bukkit.getOnlinePlayers().size() < 1) {
-                    break;
+                for (Player p:lastRedirectedPlayers) {
+                    lastPlayers.add(p.getDisplayName());
                 }
 
-                if (lastRedirectedPlayer != null) {
-                    if (lastRedirectedPlayer.isOnline() && CONNECTION_ISSUE) {
-                        lastRedirectedPlayer.sendMessage(ChatColor.BOLD + "§6Trying to connect to the server!");
-                        sendPlayerToMainServer(lastRedirectedPlayer);
-                    }
+                getLogger().info("Last players: " + lastPlayers.toString());
+
+                for (int i = lastRedirectedPlayers.size(); i > 0; i--) {
+
+                    Player lastRedirectedPlayer = lastRedirectedPlayers.get(i-1);
 
                     if (lastRedirectedPlayer.isOnline()) {
+                        lastRedirectedPlayer.sendMessage(ChatColor.BOLD + "§6Trying to connect to the server! Please wait (Server might be offline)");
+                        sendPlayerToMainServer(lastRedirectedPlayer);
                         CONNECTION_ISSUE = true;
                     } else {
-                        CONNECTION_ISSUE = false;
+                        removePlayerFromLastRedirected(lastRedirectedPlayer);
                     }
                 }
 
                 if (CONNECTION_ISSUE) {
+                    getLogger().warning("Connection issue");
+                    return;
+                }
+
+            }
+
+            //TO-DO: Find a way to redirect multiple players in one call
+            //for (int i = slots; i > 0; i--) {
+
+            for (int i = 1; i > 0; i--) {
+
+                if (queue.size() < 1) {
                     break;
                 }
 
                 Player player = queue.remove();
-                lastRedirectedPlayer = player;
+                lastRedirectedPlayers.add(player);
 
                 player.sendMessage(ChatColor.BOLD + "§6You are being sent to the server!");
                 sendPlayerToMainServer(player);
@@ -101,6 +112,11 @@ public class Main extends JavaPlugin {
     public void removePlayerFromQueue(Player player) {
         //Remove player from queue on server leave
         queue.remove(player);
+        removePlayerFromLastRedirected(player);
+    }
+
+    public void removePlayerFromLastRedirected(Player player) {
+        lastRedirectedPlayers.removeIf(selectedPlayer -> selectedPlayer.getDisplayName().equalsIgnoreCase(player.getDisplayName()));
     }
 
     public void sendPlayerToMainServer(Player player) {
@@ -162,6 +178,19 @@ public class Main extends JavaPlugin {
 
             }
         }, 0L, 150L);
+    }
+
+    public void skipQueue(Player player) {
+        if (!lastRedirectedPlayers.contains(player)) {
+            lastRedirectedPlayers.add(player);
+
+            player.sendMessage(ChatColor.BOLD + "§6You are being sent to the server!");
+            sendPlayerToMainServer(player);
+        }
+    }
+
+    public int getQueueSize() {
+        return queue.size();
     }
 
 }

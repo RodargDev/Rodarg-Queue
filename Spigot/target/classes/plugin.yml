@@ -2,3 +2,7 @@ name: RodargQueue
 version: 1.0
 api-version: 1.16
 main: io.rodarg.queue.Main
+permissions:
+  queue.skip:
+    description: skip the queue
+    default: op

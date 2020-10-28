@@ -20,19 +20,13 @@ public class PlayerJoin implements Listener {
     public void PlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (plugin.lastRedirectedPlayer != null) {
-            if (plugin.lastRedirectedPlayer.getDisplayName().equals(player.getDisplayName())) {
-                plugin.getLogger().info("reset");
-                plugin.lastRedirectedPlayer = null;
-                plugin.CONNECTION_ISSUE = false;
-            }
-        }
+        plugin.removePlayerFromLastRedirected(player);
 
         hidePlayer(player);
         player.sendMessage(ChatColor.BOLD + "§6You have entered the queue");
         event.setJoinMessage(null);
         plugin.addPlayerToQueue(player);
-        //send position in queue
+        player.sendMessage( ChatColor.BOLD + "§6Position in queue: " + plugin.getQueueSize());
     }
 
     public void hidePlayer(Player newPlayer) {
