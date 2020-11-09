@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.rodarg</groupId>
-    <artifactId>MinecraftServerQueueSpigot</artifactId>
+    <artifactId>RodargQueueSpigot</artifactId>
     <version>1.0</version>
 
     <repositories>
