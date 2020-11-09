@@ -26,9 +26,15 @@ public class Main extends JavaPlugin {
     public List<Player> lastRedirectedPlayers = new ArrayList<Player>();
 
     public int playerLimit = 50;
+    private String serverName = null;
 
     @Override
     public void onEnable() {
+        this.saveDefaultConfig();
+
+        playerLimit = this.getConfig().getInt("player-limit");
+        serverName = this.getConfig().getString("to-server");
+
         getServer().getMessenger().registerOutgoingPluginChannel(this, "queue:channel");
         getServer().getMessenger().registerOutgoingPluginChannel(this, "serverinfo:channel");
 
@@ -70,7 +76,7 @@ public class Main extends JavaPlugin {
 
                     if (lastRedirectedPlayer.isOnline()) {
                         lastRedirectedPlayer.sendMessage(ChatColor.BOLD + "§6Trying to connect to the server! Please wait (Server might be offline)");
-                        sendPlayerToMainServer(lastRedirectedPlayer);
+                        sendPlayerToServer(lastRedirectedPlayer);
                         CONNECTION_ISSUE = true;
                     } else {
                         removePlayerFromLastRedirected(lastRedirectedPlayer);
@@ -93,11 +99,12 @@ public class Main extends JavaPlugin {
                     break;
                 }
 
+                //Make function to get player from one of the 2 queues
                 Player player = queue.remove();
                 lastRedirectedPlayers.add(player);
 
                 player.sendMessage(ChatColor.BOLD + "§6You are being sent to the server!");
-                sendPlayerToMainServer(player);
+                sendPlayerToServer(player);
 
             }
 
@@ -119,14 +126,18 @@ public class Main extends JavaPlugin {
         lastRedirectedPlayers.removeIf(selectedPlayer -> selectedPlayer.getDisplayName().equalsIgnoreCase(player.getDisplayName()));
     }
 
-    public void sendPlayerToMainServer(Player player) {
+    public void sendPlayerToServer(Player player) {
         getLogger().info("Sending " + player.getDisplayName() + " to server");
 
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("ConnectToServer");
-        out.writeUTF("survival");
 
-        player.sendPluginMessage(this, "queue:channel", out.toByteArray());
+        if (serverName == null) {
+            player.sendMessage("§4Please contact the server administrator. Set the 'to-server' in the config.yml");
+        } else {
+            out.writeUTF(serverName);
+            player.sendPluginMessage(this, "queue:channel", out.toByteArray());
+        }
     }
 
     public void requestServerPlayerCount(Plugin plugin) {
@@ -185,7 +196,7 @@ public class Main extends JavaPlugin {
             lastRedirectedPlayers.add(player);
 
             player.sendMessage(ChatColor.BOLD + "§6You are being sent to the server!");
-            sendPlayerToMainServer(player);
+            sendPlayerToServer(player);
         }
     }
 

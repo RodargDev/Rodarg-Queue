@@ -1,0 +1,7 @@
+# Name of the server described in the BungeeCord config where people will get sent to
+# Example:
+# to-server: "survival"
+to-server: null
+
+# Player limit of the server people are being sent to
+player-limit: 50
