@@ -23,10 +23,16 @@ public class PlayerJoin implements Listener {
         plugin.removePlayerFromLastRedirected(player);
 
         hidePlayer(player);
-        player.sendMessage(ChatColor.BOLD + "§6You have entered the queue");
         event.setJoinMessage(null);
-        plugin.addPlayerToQueue(player);
-        player.sendMessage( ChatColor.BOLD + "§6Position in queue: " + plugin.getQueueSize());
+
+        boolean priorityQueue = plugin.addPlayerToQueue(player);
+
+        //check what queue was joined and send specific message
+        if (priorityQueue) {
+            player.sendMessage( ChatColor.BOLD + "§6Position in priority queue: " + plugin.getQueueSize(player));
+        } else {
+            player.sendMessage( ChatColor.BOLD + "§6Position in queue: " + plugin.getQueueSize(player));
+        }
     }
 
     public void hidePlayer(Player newPlayer) {

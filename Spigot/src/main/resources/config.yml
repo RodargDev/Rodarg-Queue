@@ -5,3 +5,6 @@ to-server: null
 
 # Player limit of the server people are being sent to
 player-limit: 50
+
+# Is priority queue active on your server?
+priority-queue: true

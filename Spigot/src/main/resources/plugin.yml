@@ -6,3 +6,6 @@ permissions:
   queue.skip:
     description: skip the queue
     default: op
+  queue.priority:
+    description: join the priority queue
+    default: op
