@@ -1,0 +1,21 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'io.rodarg'
+version = '1.0'
+
+description = """"""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+
+repositories {
+        
+     maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+     maven { url "https://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    compileOnly group: 'org.spigotmc', name: 'spigot-api', version:'1.16.1-R0.1-SNAPSHOT'
+}
