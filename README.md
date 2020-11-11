@@ -6,7 +6,7 @@ This plugin is only for **Bungeecord** servers.
 
 The queue is seperated into 2 plugins. One plugin is for the bungeecord server and one is for the queue server.
 
-Get the plugins here: {Spigot link}
+Get the plugins here: https://www.spigotmc.org/resources/minecraft-queue.85674/
 
 Queue server setup:
 1. Open the config file.
