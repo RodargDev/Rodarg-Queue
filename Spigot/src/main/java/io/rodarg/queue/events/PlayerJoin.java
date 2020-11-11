@@ -3,6 +3,7 @@ package io.rodarg.queue.events;
 import io.rodarg.queue.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,6 +20,7 @@ public class PlayerJoin implements Listener {
     @EventHandler
     public void PlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        player.setGameMode(GameMode.SPECTATOR);
 
         plugin.removePlayerFromLastRedirected(player);
 
@@ -27,7 +29,6 @@ public class PlayerJoin implements Listener {
 
         boolean priorityQueue = plugin.addPlayerToQueue(player);
 
-        //check what queue was joined and send specific message
         if (priorityQueue) {
             player.sendMessage( ChatColor.BOLD + "§6Position in priority queue: " + plugin.getQueueSize(player));
         } else {

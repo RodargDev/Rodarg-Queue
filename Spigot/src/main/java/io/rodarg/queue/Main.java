@@ -3,6 +3,7 @@ package io.rodarg.queue;
 import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import io.rodarg.queue.events.PlayerCommand;
 import io.rodarg.queue.events.PlayerJoin;
 import io.rodarg.queue.events.PlayerLeave;
 import io.rodarg.queue.events.PlayerMessage;
@@ -46,6 +47,9 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerJoin(this), this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(this), this);
         getServer().getPluginManager().registerEvents(new PlayerMessage(this), this);
+
+        this.getCommand("skip").setExecutor(new PlayerCommand(this));
+
         getLogger().info("Plugin enabled!");
     }
 
@@ -236,10 +240,12 @@ public class Main extends JavaPlugin {
     }
 
     public void skipQueue(Player player) {
-        if (!lastRedirectedPlayers.contains(player)) {
+        if (!lastRedirectedPlayers.contains(player) && player.hasPermission("queue.skip")) {
             lastRedirectedPlayers.add(player);
 
             player.sendMessage(ChatColor.BOLD + "§6You are being sent to the server!");
+
+            getLogger().info(player.getDisplayName() + " skipped the queue");
 
             sendPlayerToServer(player);
         }

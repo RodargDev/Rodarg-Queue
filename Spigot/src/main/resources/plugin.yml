@@ -9,3 +9,7 @@ permissions:
   queue.priority:
     description: join the priority queue
     default: op
+commands:
+  skip:
+    description: Skip queue
+    usage: /skip

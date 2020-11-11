@@ -19,7 +19,7 @@ public class PlayerMessage implements Listener {
 
         Player player = event.getPlayer();
 
-        if (event.getMessage().equalsIgnoreCase("skip") && player.hasPermission("queue.skip")) {
+        if (event.getMessage().equalsIgnoreCase("skip")) {
             plugin.skipQueue(player);
         }
 
