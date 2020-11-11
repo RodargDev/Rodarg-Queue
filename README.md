@@ -8,11 +8,7 @@ The queue is seperated into 2 plugins. One plugin is for the bungeecord server a
 
 Get the plugins here: https://www.spigotmc.org/resources/minecraft-queue.85674/
 
-Queue server setup:
-1. Open the config file.
-2. Change the "to-server" to the name in the bungeecord config of the server you want the people to be sent to.
-3. Change the "player-limit" to the player limit of the server that players will get sent to.
-4. Restart the server.
+The spigot link also includes instructions on how to install it.
 
 # Feedback
 This is my first opensource "project" so feedback is much appriciated.
