@@ -8,7 +8,7 @@ The queue is seperated into 2 plugins. One plugin is for the bungeecord server a
 
 Get the plugins here: https://www.spigotmc.org/resources/minecraft-queue.85674/
 
-The spigot link also includes instructions on how to install it.
+*The spigot link also includes instructions on how to install it.*
 
 # Feedback
 This is my first opensource "project" so feedback is much appriciated.
