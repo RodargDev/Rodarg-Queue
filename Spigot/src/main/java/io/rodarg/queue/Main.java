@@ -182,6 +182,7 @@ public class Main extends JavaPlugin {
 
                 Player p = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
                 if (p != null) {
+                    out.writeUTF(serverName);
                     p.sendPluginMessage(plugin, "serverinfo:channel", out.toByteArray());
                 }
             }

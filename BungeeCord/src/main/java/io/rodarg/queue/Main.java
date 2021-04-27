@@ -54,11 +54,11 @@ public class Main extends Plugin implements Listener {
                 String action = in.readUTF();
 
                 if (action.equalsIgnoreCase("GetPlayerCount")) {
-                    //String server = in.readUTF();
+                    String server = in.readUTF();
 
                     System.out.print("Playercount requested");
 
-                    int playerCount = ProxyServer.getInstance().getServerInfo("survival").getPlayers().size();
+                    int playerCount = ProxyServer.getInstance().getServerInfo(server).getPlayers().size();
 
                     sendPlayerCountToServer((Server) event.getSender(), playerCount);
                 }
