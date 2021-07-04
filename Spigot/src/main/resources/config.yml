@@ -1,10 +1,40 @@
+# -= Plugin Settings =-
 # Name of the server described in the BungeeCord config where people will get sent to
 # Example:
 # to-server: "survival"
-to-server: null
+to-server: ""
 
 # Player limit of the server people are being sent to
 player-limit: 50
 
 # Is priority queue active on your server?
 priority-queue: true
+
+# -= Custom messages =-
+# Usable variables
+# {USER_POSITION} (Can only be used for: position-normal, position-priority)
+# {USERNAME} (Can be used for all messages)
+# {NORMAL_QUEUE_SIZE} (Can be used for all messages)
+# {PRIORITY_QUEUE_SIZE} (Can be used for all messages)
+message:
+  player:
+    # Player welcome - normal queue welcome
+    welcome-normal: "§l§6Welcome {USERNAME}, you have entered the queue"
+
+    # Player welcome - priority queue welcome
+    welcome-priority: "§l§6Welcome {USERNAME}, you have entered the priority queue"
+
+    # Player position - normal queue position
+    position-normal: "§l§6Position in queue: {USER_POSITION}"
+
+    # Player position - priority queue position
+    position-priority: "§l§6Position in priority queue: {USER_POSITION}"
+
+    # Redirect to server - normal
+    redirect-normal: "§l§6You are being sent to the server!"
+
+    # Redirect to server - skip
+    redirect-skip: "§l§6You are being sent to the server!"
+
+    # Can't connect
+    cannot-connect: "§l§6Trying to connect to the server! Please wait (Server might be offline)"

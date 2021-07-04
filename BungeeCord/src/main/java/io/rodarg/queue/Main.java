@@ -32,9 +32,7 @@ public class Main extends Plugin implements Listener {
 
         if (event.getTag().equals("queue:channel")) {
             //Queue commands
-
             try {
-
                 String action = in.readUTF();
 
                 if (action.equalsIgnoreCase("ConnectToServer")) {
@@ -48,9 +46,7 @@ public class Main extends Plugin implements Listener {
             }
         } else if (event.getTag().equals("serverinfo:channel")) {
             //PlayerCount channel
-
             try {
-
                 String action = in.readUTF();
 
                 if (action.equalsIgnoreCase("GetPlayerCount")) {

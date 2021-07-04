@@ -1,6 +1,7 @@
 package io.rodarg.queue.events;
 
 import io.rodarg.queue.Main;
+import io.rodarg.queue.models.ServerQueue;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -12,9 +13,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class PlayerJoin implements Listener {
 
     private Main plugin;
+    private ServerQueue serverQueue;
 
-    public PlayerJoin(Main plugin) {
+    public PlayerJoin(Main plugin, ServerQueue serverQueue) {
         this.plugin = plugin;
+        this.serverQueue = serverQueue;
     }
 
     @EventHandler
@@ -22,17 +25,17 @@ public class PlayerJoin implements Listener {
         Player player = event.getPlayer();
         player.setGameMode(GameMode.SPECTATOR);
 
-        plugin.removePlayerFromLastRedirected(player);
+        serverQueue.removePlayerFromLastRedirected(player);
 
         hidePlayer(player);
         event.setJoinMessage(null);
 
-        boolean priorityQueue = plugin.addPlayerToQueue(player);
+        boolean priorityQueue = serverQueue.addPlayerToQueue(player);
 
         if (priorityQueue) {
-            player.sendMessage( ChatColor.BOLD + "§6Position in priority queue: " + plugin.getQueueSize(player));
+            player.sendMessage(serverQueue.getConfigFormatter().formatConfigText(player, "message.player.position-priority", serverQueue.getQueueSize(player)));
         } else {
-            player.sendMessage( ChatColor.BOLD + "§6Position in queue: " + plugin.getQueueSize(player));
+            player.sendMessage(serverQueue.getConfigFormatter().formatConfigText(player, "message.player.position-normal", serverQueue.getQueueSize(player)));
         }
     }
 
