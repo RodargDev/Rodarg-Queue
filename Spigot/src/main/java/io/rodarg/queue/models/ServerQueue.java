@@ -1,9 +1,10 @@
-package io.rodarg.queue;
+package io.rodarg.queue.models;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import io.rodarg.queue.ConfigFormatter;
+import io.rodarg.queue.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -22,15 +23,22 @@ public class ServerQueue {
     private final boolean priorityQueueActive;
 
     private final Main plugin;
-    private FileConfiguration config;
     private ConfigFormatter configFormatter;
 
     public Queue<Player> getMainQueue() {
         return mainQueue;
     }
 
+    public int getMainQueueSize() {
+        return mainQueue.size();
+    }
+
     public Queue<Player> getPriorityQueue() {
         return priorityQueue;
+    }
+
+    public int getPriorityQueueSize() {
+        return priorityQueue.size();
     }
 
     public int getPlayerLimit() {
@@ -47,8 +55,7 @@ public class ServerQueue {
 
     public ServerQueue(Main plugin, FileConfiguration config) {
         this.plugin = plugin;
-        this.config = config;
-        this.configFormatter = new ConfigFormatter();
+        this.configFormatter = new ConfigFormatter(config, this);
 
         this.playerLimit = config.getInt("player-limit");
         this.toServerName = config.getString("to-server");
@@ -80,7 +87,7 @@ public class ServerQueue {
                     Player lastRedirectedPlayer = lastRedirectedPlayers.get(i-1);
 
                     if (lastRedirectedPlayer.isOnline()) {
-                        lastRedirectedPlayer.sendMessage(configFormatter.formatString(lastRedirectedPlayer, plugin.getConfig().getString("message.player-cannot-connect")));
+                        lastRedirectedPlayer.sendMessage(configFormatter.formatConfigText(lastRedirectedPlayer, "message.player.cannot-connect"));
                         sendPlayerToServer(lastRedirectedPlayer);
                         CONNECTION_ISSUE = true;
                     } else {
@@ -122,7 +129,7 @@ public class ServerQueue {
 
                 lastRedirectedPlayers.add(player);
 
-                player.sendMessage(ChatColor.BOLD + "§6You are being sent to the server!");
+                player.sendMessage(configFormatter.formatConfigText(player, "message.player.redirect-normal"));
                 sendPlayerToServer(player);
 
             }
@@ -146,7 +153,7 @@ public class ServerQueue {
         if (!lastRedirectedPlayers.contains(player) && player.hasPermission("queue.skip")) {
             lastRedirectedPlayers.add(player);
 
-            player.sendMessage(ChatColor.BOLD + "§6You are being sent to the server!");
+            player.sendMessage(configFormatter.formatConfigText(player, "message.player.redirect-skip"));
 
             getLogger().info(player.getDisplayName() + " skipped the queue");
 
@@ -157,11 +164,11 @@ public class ServerQueue {
     public boolean addPlayerToQueue(Player player) {
         if (hasPriorityQueue(player)) {
             priorityQueue.add(player);
-            player.sendMessage(ChatColor.BOLD + "§6You have entered the priority queue");
+            player.sendMessage(configFormatter.formatConfigText(player, "message.player.welcome-priority"));
             return true;
         } else {
             mainQueue.add(player);
-            player.sendMessage(ChatColor.BOLD + "§6You have entered the queue");
+            player.sendMessage(configFormatter.formatConfigText(player, "message.player.welcome-normal"));
             return false;
         }
     }
@@ -178,6 +185,10 @@ public class ServerQueue {
 
     public void removePlayerFromLastRedirected(Player player) {
         lastRedirectedPlayers.removeIf(selectedPlayer -> selectedPlayer.getDisplayName().equalsIgnoreCase(player.getDisplayName()));
+    }
+
+    public ConfigFormatter getConfigFormatter() {
+        return configFormatter;
     }
 
     public int getQueueSize(Player player) {

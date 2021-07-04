@@ -12,19 +12,29 @@ priority-queue: true
 
 # -= Custom messages =-
 # Usable variables
-# {USER_POSITION}
+# {USER_POSITION} (Can only be used for: position-normal, position-priority)
+# {USERNAME} (Can be used for all messages)
+# {NORMAL_QUEUE_SIZE} (Can be used for all messages)
+# {PRIORITY_QUEUE_SIZE} (Can be used for all messages)
 message:
-  # Player join - normal queue position
-  player-join-normal:
+  player:
+    # Player welcome - normal queue welcome
+    welcome-normal: "§l§6Welcome {USERNAME}, you have entered the queue"
 
-  # Player join - priority queue position
-  player-join-priority:
+    # Player welcome - priority queue welcome
+    welcome-priority: "§l§6Welcome {USERNAME}, you have entered the priority queue"
 
-  # Redirect to server - normal
-  player-redirect-normal:
+    # Player position - normal queue position
+    position-normal: "§l§6Position in queue: {USER_POSITION}"
 
-  # Redirect to server - skip
-  player-redirect-skip:
+    # Player position - priority queue position
+    position-priority: "§l§6Position in priority queue: {USER_POSITION}"
 
-  # Can't connect
-  player-cannot-connect: "§l§6Trying to connect to the server! Please wait (Server might be offline)"
+    # Redirect to server - normal
+    redirect-normal: "§l§6You are being sent to the server!"
+
+    # Redirect to server - skip
+    redirect-skip: "§l§6You are being sent to the server!"
+
+    # Can't connect
+    cannot-connect: "§l§6Trying to connect to the server! Please wait (Server might be offline)"

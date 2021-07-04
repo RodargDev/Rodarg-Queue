@@ -1,7 +1,7 @@
 package io.rodarg.queue.events;
 
 import io.rodarg.queue.Main;
-import io.rodarg.queue.ServerQueue;
+import io.rodarg.queue.models.ServerQueue;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -33,9 +33,9 @@ public class PlayerJoin implements Listener {
         boolean priorityQueue = serverQueue.addPlayerToQueue(player);
 
         if (priorityQueue) {
-            player.sendMessage( ChatColor.BOLD + "§6Position in priority queue: " + serverQueue.getQueueSize(player));
+            player.sendMessage(serverQueue.getConfigFormatter().formatConfigText(player, "message.player.position-priority", serverQueue.getQueueSize(player)));
         } else {
-            player.sendMessage( ChatColor.BOLD + "§6Position in queue: " + serverQueue.getQueueSize(player));
+            player.sendMessage(serverQueue.getConfigFormatter().formatConfigText(player, "message.player.position-normal", serverQueue.getQueueSize(player)));
         }
     }
 

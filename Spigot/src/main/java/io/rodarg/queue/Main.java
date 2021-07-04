@@ -8,15 +8,13 @@ import io.rodarg.queue.events.PlayerJoin;
 import io.rodarg.queue.events.PlayerLeave;
 import io.rodarg.queue.events.PlayerMessage;
 import io.rodarg.queue.listeners.PluginMessages;
+import io.rodarg.queue.models.ServerQueue;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.logging.Logger;
 
 public class Main extends JavaPlugin {
 
@@ -30,9 +28,7 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         this.saveDefaultConfig();
 
-        FileConfiguration config = this.getConfig();
-
-        serverQueue = new ServerQueue(this, config);
+        serverQueue = new ServerQueue(this, this.getConfig());
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "queue:channel");
         getServer().getMessenger().registerOutgoingPluginChannel(this, "serverinfo:channel");
@@ -87,7 +83,7 @@ public class Main extends JavaPlugin {
                         player.sendMessage("§4Please contact an server administrator. 'to-server' value in the config.yml isn't set");
                     }
 
-                    player.sendMessage( ChatColor.BOLD + "§6Position in queue: " + i);
+                    player.sendMessage(serverQueue.getConfigFormatter().formatConfigText(player, "message.player.position-normal", i));
                     i++;
                 }
 
@@ -95,7 +91,7 @@ public class Main extends JavaPlugin {
                     i = 1;
 
                     for (Player player : serverQueue.getPriorityQueue()) {
-                        player.sendMessage( ChatColor.BOLD + "§6Position in priority queue: " + i);
+                        player.sendMessage(serverQueue.getConfigFormatter().formatConfigText(player, "message.player.position-priority", i));
                         i++;
                     }
                 }

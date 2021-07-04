@@ -1,7 +1,7 @@
 package io.rodarg.queue.events;
 
 import io.rodarg.queue.Main;
-import io.rodarg.queue.ServerQueue;
+import io.rodarg.queue.models.ServerQueue;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

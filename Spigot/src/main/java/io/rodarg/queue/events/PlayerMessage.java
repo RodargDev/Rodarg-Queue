@@ -1,8 +1,7 @@
 package io.rodarg.queue.events;
 
 import io.rodarg.queue.Main;
-import io.rodarg.queue.ServerQueue;
-import org.bukkit.Server;
+import io.rodarg.queue.models.ServerQueue;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
