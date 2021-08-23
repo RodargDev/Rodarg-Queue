@@ -143,6 +143,8 @@ public class ServerQueue {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("ConnectToServer");
 
+        //Check if server is online else dont connect anyone, if offline set variable and wait
+
         if (!getToServerName().isEmpty()) {
             out.writeUTF(toServerName);
             player.sendPluginMessage(plugin, "queue:channel", out.toByteArray());

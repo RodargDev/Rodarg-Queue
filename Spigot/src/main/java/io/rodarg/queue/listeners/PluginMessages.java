@@ -33,8 +33,12 @@ public class PluginMessages implements PluginMessageListener {
                 int playerCount = in.readInt();
                 getLogger().info("Players in server: " + playerCount + " - open spots: " + (serverQueue.getPlayerLimit() - playerCount));
 
-                serverQueue.fillPlayerSlots(serverQueue.getPlayerLimit() - playerCount);
-
+                if (playerCount <= serverQueue.getPlayerLimit()) {
+                    serverQueue.fillPlayerSlots(serverQueue.getPlayerLimit() - playerCount);
+                } else {
+                    serverQueue.fillPlayerSlots(0);
+                    getLogger().info("Server is currently over capacity, waiting for " + (playerCount - serverQueue.getPlayerLimit()) + " players to leave");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
