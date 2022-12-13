@@ -10,5 +10,8 @@ Get the plugins here: https://www.spigotmc.org/resources/minecraft-queue.85674/
 
 *The spigot link also includes instructions on how to install it.*
 
+# Refactoring
+This plugin was created in 2020 and is a big mess, i am aware the code needs some cleanup
+
 # Feedback
 This is my first opensource "project" so feedback is much appriciated.
