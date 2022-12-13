@@ -1,4 +1,4 @@
-# Rodarg - Minecraft Server Queue
+# Minecraft Server Queue for BungeeCord
 This is a minecraft server queue like the one used in 2B2T and other anarchy servers. This plugin does also have priority queue and a way to skip the queue.
 
 # How To
